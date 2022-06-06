@@ -1,4 +1,4 @@
-# This is a simple application to fetch the nearest objects to aerth for a specific date range using the [NASA api](https://api.nasa.gov/). 
+# This is a simple application to fetch the nearest objects to earth for a specific date range using the [NASA api](https://api.nasa.gov/). 
 # To do this we used **Fastapi**, **Virtualenv** and **Pip3**.
 
 ## Download and install the app

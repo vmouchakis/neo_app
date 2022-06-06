@@ -2,6 +2,15 @@ import requests
 import pandas as pd
 pd.set_option('display.float_format', '{:.8f}'.format)
 from collections import defaultdict
+import configparser
+
+
+# read configs
+config = configparser.RawConfigParser()
+config.read("./configs/config.ini")
+api_key = config["nasa"]["api_key"]
+api_url = config["nasa"]["api_url"]
+api_response_details = config["nasa"]["details"]
 
 
 class Downloader():
@@ -13,12 +22,12 @@ class Downloader():
         # the 'url' and its parapemeters were retrieved from the documentation of the NASA api
         # as parameters we need the 'start' and 'end date' and the 'api key'
         # the 'detailed' parameter is optional and it enables a more detailed response from the api
-        url = "https://api.nasa.gov/neo/rest/v1/feed"
+        url = api_url
         params = {
-            "api_key":"DpmLXIe2jzwffE2vxsZcEp8ye0rwpiddSJrJvonu",
+            "api_key":api_key,
             "start_date":start_date,
             "end_date":end_date,
-            "detailed":"true"
+            "detailed":api_response_details
         }
         response = requests.get(url,params=params).json()
 
