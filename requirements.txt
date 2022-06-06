@@ -2,4 +2,6 @@ fastapi
 "uvicorn[standard]"
 jinja2
 requests
+pandas
+python-multipart
 urllib3

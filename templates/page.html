@@ -1,16 +1,27 @@
-<h1>
-    Welcome to FastAPI Starter.
-</h1>
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', path='/css/style.css') }}" />
+<title>Neo App</title>
+<div>
+    <h1>
+        NEO App
+    </h1>
+    <p>
+        This is a simple application to fetch the nearest objects to aerth for a specific date range using the NASA api.
+    </p>
+</div> 
 
-<form method="post">
-    <label for="start_date">Start date:</label>
-    <input type="date" id="start_date" name="start_date">
+<div>
+    <form method="post">
+        <label for="start_date">Start date:</label>
+        <input type="date" id="start_date" name="start_date">
 
 
-    <label for="end_date">Start date:</label>
-    <input type="date" id="end_date" name="end_date">
+        <label for="end_date">End date:</label>
+        <input type="date" id="end_date" name="end_date">
 
-    <input type="submit">
-</form>
+        <input type="submit">
+    </form>
+</div>
 
+<div id="data-table" style="height:500px; overflow-y: auto; display: inline-block;">
 {{data|safe}}
+</div>
