@@ -24,6 +24,7 @@ class Downloader():
 
         # check if the api found at least one object
         # if not, we return '0' (we 'll check if this class returns a datframe or not)
+        # this mostly happens when we choose extreme dates, eg. 2567 or 565
         if response["element_count"]  == 0:
             return 0
 

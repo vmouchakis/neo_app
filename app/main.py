@@ -8,6 +8,7 @@ from app.downloader import Downloader
 from typing import Optional
 from pathlib import Path
 import pandas as pd
+from datetime import datetime
 
 # Initializing the application
 app = FastAPI()
@@ -80,24 +81,52 @@ async def get_data(request: Request, start_date: date = Form(default=""), end_da
             data = "0 objects found."
             return templates.TemplateResponse("page.html", {"request": request, "data": data})
     else:
-        # if the user correctly inserted both 'start' and 'end date', then we pass these values to the Downloader to make the request to the api
+        # if the user correctly inserted both 'start' and 'end date', then we check if the diferrence between them are more than 7 days and less the 0 days
 
         start_date = start_date.strftime("%Y-%m-%d")
         end_date = end_date.strftime("%Y-%m-%d")
 
-        # create an object of Downloader class
-        # and pass the values
-        dl = Downloader()
-        data = dl.fetch_asteroids(start_date=start_date, end_date=end_date)
-        print(data)
-        
-        # check if the Downloader class returns a dataframe with the desired objects, or not
-        if isinstance(data, pd.DataFrame):
-            # if the Downloader returns a dataframe, meaning the desired objects, we return it as an html table
-            return templates.TemplateResponse("page.html", {"request": request, "data": data.to_html(index=False, justify="center")})
+        d1 = datetime.strptime(start_date, "%Y-%m-%d")
+        d2 = datetime.strptime(end_date, "%Y-%m-%d")
+        delta1 = d2 - d1
+        delta2 = d1 - d2
+
+        # if the dates are ok, we pass them in the Downloader
+        if delta1.days > 7 & delta2.days < 0:
+            # create an object of Downloader class
+            # and pass the values
+            dl = Downloader()
+            data = dl.fetch_asteroids(start_date=start_date, end_date=end_date)
+            print(data)
+            
+            # check if the Downloader class returns a dataframe with the desired objects, or not
+            if isinstance(data, pd.DataFrame):
+                # if the Downloader returns a dataframe, meaning the desired objects, we return it as an html table
+                return templates.TemplateResponse("page.html", {"request": request, "data": data.to_html(index=False, justify="center")})
+            else:
+                # if it is not, we return a message that no objects were found
+                data = "0 objects found."
+                return templates.TemplateResponse("page.html", {"request": request, "data": data})
         else:
-            # if it is not, we return a message that no objects were found
-            data = "0 objects found."
-            return templates.TemplateResponse("page.html", {"request": request, "data": data})
+            # if the dates are not ok, we use as 'start date' the date that the user chose and as an 'end date' an empty string
+            # if the api does not find an 'end date', it sets the 'end date' for seven days after the 'start date'
+
+            # start_date has already a value
+            end_date = ""
+
+            # create an object of Downloader class
+            # and pass the values
+            dl = Downloader()
+            data = dl.fetch_asteroids(start_date=start_date, end_date=end_date)
+            print(data)
+
+            # check if the Downloader class returns a dataframe with the desired objects, or not
+            if isinstance(data, pd.DataFrame):
+                # if the Downloader returns a dataframe, meaning the desired objects, we return it as an html table
+                return templates.TemplateResponse("page.html", {"request": request, "data": data.to_html(index=False, justify="center")})
+            else:
+                # if it is not, we return a message that no objects were found
+                data = "0 objects found."
+                return templates.TemplateResponse("page.html", {"request": request, "data": data})
 
 
