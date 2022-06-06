@@ -59,7 +59,7 @@ async def get_data(request: Request, start_date: date = Form(default=""), end_da
             return templates.TemplateResponse("page.html", {"request": request, "data": data})
 
     # after checking for the 'start date', we check again for the 'end date'
-    if end_date == "":
+    elif end_date == "":
         # if the api does not find an 'end date', it sets the 'end date' for seven days after the 'start date'
         # so we do not change the value of the 'end date'
 
