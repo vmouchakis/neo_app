@@ -92,7 +92,7 @@ async def get_data(request: Request, start_date: date = Form(default=""), end_da
         delta2 = d1 - d2
 
         # if the dates are ok, we pass them in the Downloader
-        if delta1.days > 7 & delta2.days < 0:
+        if (delta1.days <= 7 & delta1.days >= 0) & (delta2.days >= -7 & delta2.days <= 0):
             # create an object of Downloader class
             # and pass the values
             dl = Downloader()
